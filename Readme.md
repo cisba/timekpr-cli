@@ -1,11 +1,11 @@
 # Simple Timekpr CLI
 
-If:
-* you use Timekpr-nExT to limit time usage of your childrens
-* you are lazy and prefer ssh to a PC than going physically to its keyboard
-* you are a geek used to issue commands in a shell
+IF (you use Timekpr-nExT to limit time usage of your childrens)
 
-Then likely you will like this script
+AND (you are lazy and prefer ssh to a PC rather than get up)
 
-More info on Timekpr-nExT [here](https://launchpad.net/timekpr-next).
+AND (you are a geek used to issuing commands in a shell)
 
+THEN (you will probably like this script)
+
+Read more about Timekpr-nExT [here](https://launchpad.net/timekpr-next).
