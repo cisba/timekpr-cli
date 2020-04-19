@@ -1,0 +1,69 @@
+#!/usr/bin/python3
+
+''' Simple CLI for Timekpr-nExT '''
+
+import sys
+from os.path import isfile
+from datetime import date
+
+
+def check_params(argv):
+    ''' Check params '''
+
+    # check num of params
+    if len(argv) not in (2, 3):
+        sys.exit("Usage: %s <username> [<minutes>]" % argv[0])
+
+    # check files exist for username
+    f_cur = "/var/lib/timekpr/" + argv[1] + ".time"
+    f_sched = "/etc/timekpr/" + argv[1]
+    for filename in (f_cur, f_sched):
+        if not isfile(filename):
+            print("Invalid user: %s" % argv[1])
+            sys.exit("File not found: %s" % filename)
+
+    # check 3th param for a valid time format
+    sec2set = None
+    if len(argv) == 3:
+        try:
+            sec2set = int(argv[2]) * 60
+        except ValueError:
+            sys.exit("Bad time format: %s" % argv[2])
+
+    return f_cur, f_sched, sec2set
+
+
+def sec2min(sec):
+    ''' conversion from sec to min '''
+    return "%d:%02d" % (int(sec / 60), sec % 60)
+
+
+def main():
+    ''' main '''
+
+    # get params
+    f_cur, f_sched, sec2set = check_params(sys.argv)
+
+    # get current day of week
+    day = date.today().isoweekday()
+
+    # get scheduled time for today
+    with open(f_sched, "r") as h_sched:
+        sched = int(h_sched.read().split(" ")[day])
+
+    # set new time if requested
+    if sec2set:
+        try:
+            with open(f_cur, "w") as h_cur:
+                h_cur.write(str(sched - sec2set))
+        except PermissionError:
+            print("You don't have permission to write file: %s" % f_cur)
+            print("Tips: use sudo or change file permissions")
+            sys.exit(1)
+
+    # get and print remaining time
+    with open(f_cur, "r") as h_cur:
+        cur = int(h_cur.read())
+    print("Remaining: %s" % sec2min(sched - cur))
+
+main()
