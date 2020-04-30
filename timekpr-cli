@@ -52,7 +52,7 @@ def main():
         sched = int(h_sched.read().split(" ")[day])
 
     # set new time if requested
-    if sec2set:
+    if sec2set is not None:
         try:
             with open(f_cur, "w") as h_cur:
                 h_cur.write(str(sched - sec2set))
