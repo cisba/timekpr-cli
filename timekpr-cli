@@ -44,8 +44,9 @@ def main():
     # get params
     f_cur, f_sched, sec2set = check_params(sys.argv)
 
-    # get current day of week dom = 1, mon = 2, ... sat = 7
-    day = 1 + date.today().isoweekday()
+    # isoweekday: mon = 1, ... dom = 7
+    # timekeeper: dom = 1, ... sat = 7
+    day = 1 + (date.today().isoweekday() % 7)
 
     # get scheduled time for today
     with open(f_sched, "r") as h_sched:
